@@ -25,23 +25,20 @@ int main(){
     cout << "Loan Amount (principal) in dollars? "; 
     cin >> principal;
 
-    double annual;
+    double annual,loan;
     cout << "Annual interest rate (as percentage, e.g., 5 for 5%)? ";
     cin >> annual;
 
-    double loan;
     cout << "Loan term in years? ";
     cin >> loan;
 
     //converting and calculation
-    double r;
+    double r, total;
     int n;
 
     r = (annual / 100.0) / 12.0;     //Monthly rate
     n = loan * 12;                   //Number of months
 
-    double total;
-    cout << fixed << setprecision(2);
     total = principal * (r * pow(1+r, n)) / (pow(1 + r, n) - 1);   
     cout << "The monthly mortgage payment is $" << total << endl;
 
