@@ -9,6 +9,7 @@
 #include <iostream>
 #include <iomanip> //This function allows to use setprecision
 #include <cmath>  //Different functions for calculations
+#include <string>
 
 using namespace std;
 
@@ -39,6 +40,29 @@ int main(){
                 if (x == 0.1) you will fail if you compare the two double since they are not the same   
             To fix this is using double or cmath to combat this or if(abs(0.1-x)) <= 10^-16
     */
+
+    string punch; //Will whatever
+    cout << "Give me a number: ";
+    getline(cin, punch); // will take input until it is press enter
+
+
+    //For example:
+
+    string circleName, leaderName, garbage;
+
+    cout << "Enter name of your circle: ";
+    getline(cin, circleName);
+
+    cout << "Enter name of you leader: ";
+    cin >> leaderName;
+
+    //Note if you combinne cout and cin it will skip some of the functions
+    //Use cin.ignore() to prevent the skipe
+    cin.ignore();
+
+    cin >> garbage;
+    cout << "Garbage" << garbage; // this is will connect all previous cin and to allow the next line to pop-up
+
 
     return 0;
 }
