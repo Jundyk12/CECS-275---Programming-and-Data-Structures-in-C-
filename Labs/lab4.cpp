@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>   //Use string instead of char 
+#include <fstream>
 using namespace std;
 
 int main() {
@@ -91,48 +92,95 @@ int main() {
             calc_income = (calc_income * 0.10);  
             tax_rate = "10%";
         } else if  (calc_income <= 63100 ) {
-            calc_income = (16550 * 0.12) + (calc_income - 63100) * 0.12; 
+            calc_income = (16550 * 0.10)
+                        + (calc_income - 16551) * 0.12;
             tax_rate = "12%";
         } else if (calc_income <= 100500) {
-            calc_income = (calc_income * 0.22); 
+            calc_income = (16550 * 0.10)
+                        + (63100 - 16551) * 0.12
+                        + (calc_income - 63101) * 0.22;
             tax_rate = "22%";
-        } else if (calc_income >= 100501 && calc_income <= 191950) {
-            calc_income = (calc_income * 0.24); 
+        } else if (calc_income <= 191950) {
+            calc_income = (16550 * 0.10)
+                        + (63100 - 16551) * 0.12
+                        + (100500 - 63101) * 0.22
+                        + (calc_income - 100501) * 0.24;
             tax_rate = "24%";
-        } else if (calc_income >= 191951 && calc_income <= 243700) {
-            calc_income = (calc_income * 0.32); 
+
+        } else if (calc_income <= 243700) {
+            calc_income = (16550 * 0.10)
+                        + (63100 - 16551) * 0.12
+                        + (100500 - 63101) * 0.22
+                        + (191950 - 100501) * 0.24
+                        + (calc_income - 191951) * 0.32;
             tax_rate = "32%";
-        } else if (calc_income >= 243701 && calc_income <= 609350) {
-            calc_income = (calc_income * 0.35); 
+        } else if (calc_income <= 609350) {
+            calc_income = (16550 * 0.10)
+                        + (63100 - 16551) * 0.12
+                        + (100500 - 63101) * 0.22
+                        + (191950 - 100501) * 0.24
+                        + (243700 - 191951) * 0.32
+                        + (calc_income - 243701) * 0.35;
             tax_rate = "35%";
         } else if (calc_income >= 609351){
-            calc_income = (calc_income * 0.37); 
+            calc_income = (16550 * 0.10)
+                        + (63100 - 16551) * 0.12
+                        + (100500 - 63101) * 0.22
+                        + (191950 - 100501) * 0.24
+                        + (243700 - 191951) * 0.32
+                        + (609350 - 243701) * 0.35
+                        + (calc_income - 609351) * 0.37; 
             tax_rate = "37%";
+        }
+        else{
+            cout << "Income cannot be negative";
+            return 0;
         }
     }
 
     //"J" || "j" for married filing jointly
     if (filing_status == 'J' || filing_status == 'j') {
         if (calc_income <= 23200) {
-            calc_income = (calc_income * 0.10);  
+            calc_income = (23200 * 0.10);
             tax_rate = "10%";
-        } else if  (calc_income >= 23201 && calc_income <= 94300 ) {
-            calc_income = (calc_income * 0.12); 
+        } else if  (calc_income <= 94300 ) {
+            calc_income = (23200 * 0.10)
+                        + (94300 - 23201) * 0.12;
             tax_rate = "12%";
-        } else if (calc_income >= 94301 && calc_income <= 201050) {
-            calc_income = (calc_income * 0.22); 
+        } else if (calc_income <= 201050) {
+            calc_income = (23200 * 0.10)
+                        + (94300 - 23201) * 0.12
+                        + (calc_income - 94301) * 0.22; 
             tax_rate = "22%";
-        } else if (calc_income >= 201051 && calc_income <= 383900) {
-            calc_income = (calc_income * 0.24); 
+        } else if (calc_income <= 383900) {
+            calc_income = (23200 * 0.10)
+                        + (94300 - 23201) * 0.12
+                        + (201050 - 94301) * 0.22
+                        + (calc_income - 201051) * 0.24;
             tax_rate = "24%";
-        } else if (calc_income >= 383901 && calc_income <= 487450) {
-            calc_income = (calc_income * 0.32); 
+        } else if (calc_income <= 487450) {
+            calc_income = (23200 * 0.10)
+                        + (94300 - 23201) * 0.12
+                        + (201050 - 94301) * 0.22
+                        + (383900 - 201051) * 0.24
+                        + (calc_income - 383901) * 0.32;
             tax_rate = "32%";
-        } else if (calc_income >= 487451 && calc_income <= 731200) {
-            calc_income = (calc_income * 0.35); 
+        } else if (calc_income <= 731200) {
+            calc_income = (23200 * 0.10)
+                        + (94300 - 23201) * 0.12
+                        + (201050 - 94301) * 0.22
+                        + (383900 - 201051) * 0.24
+                        + (487450 - 383901) * 0.32
+                        + (calc_income - 487451) * 0.35;
             tax_rate = "35%";
         } else if (calc_income >= 731201) {
-            calc_income = (calc_income * 0.37); 
+            calc_income = (23200 * 0.10)
+                        + (94300 - 23201) * 0.12
+                        + (201050 - 94301) * 0.22
+                        + (383900 - 201051) * 0.24
+                        + (487450 - 383901) * 0.32
+                        + (731200 - 487451) * 0.35
+                        + (calc_income - 731201) * 0.37; 
             tax_rate = "37%";
         }
     }
@@ -140,29 +188,49 @@ int main() {
     //"p" || "P" for married filing separtely
     if (filing_status == 'P' || filing_status == 'p') {
         if (calc_income <= 11600) {
-            calc_income = (calc_income * 0.10); 
+            calc_income = (calc_income * 0.10);
             tax_rate = "10%";
-        } else if  (calc_income >= 11601 && calc_income <= 47150 ) {
-            calc_income = (calc_income * 0.12); 
-            tax_rate = "12%";
-        } else if (calc_income >= 47151 && calc_income <= 100525) {
-            calc_income = (calc_income * 0.22); 
+        } else if  (calc_income <= 47150 ) {
+            calc_income = = (11600 * 0.10)
+                        + (47150 - 11601) * 0.12
+                        + (calc_income - 47151) * 0.22;
+        } else if (calc_income <= 100525) {
+            calc_income = (11600 * 0.10)
+                        + (47150 - 11601) * 0.12
+                        + (calc_income - 100525) * 0.22;
             tax_rate = "22%";
-        } else if (calc_income >= 100526 && calc_income <= 191950) {
-            calc_income = (calc_income * 0.24); 
+        } else if (calc_income <= 191950) {
+            calc_income = (11600 * 0.10)
+                        + (47150 - 11601) * 0.12
+                        + (100525 - 47151) * 0.22
+                        + (calc_income - 100526) * 0.24;
             tax_rate = "24%";
-        } else if (calc_income >= 191951 && calc_income <= 243725) {
-            calc_income = (calc_income * 0.32); 
+        } else if (calc_income <= 243725) {
+            calc_income = (11600 * 0.10)
+                        + (47150 - 11601) * 0.12
+                        + (100525 - 47151) * 0.22
+                        + (191950 - 100526) * 0.24
+                        + (calc_income - 191951) * 0.32;
             tax_rate = "32%";
-        } else if (calc_income >= 243726 && calc_income <= 365600) {
-            calc_income = (calc_income * 0.35); 
+        } else if (calc_income <= 365600) {
+            calc_income = (11600 * 0.10)
+                        + (47150 - 11601) * 0.12
+                        + (100525 - 47151) * 0.22
+                        + (191950 - 100526) * 0.24
+                        + (243725 - 191951) * 0.32
+                        + (calc_income - 243726) * 0.35;
             tax_rate = "35%";
         } else if (calc_income >= 365601){
-            calc_income = (calc_income * 0.37); 
+            calc_income = (11600 * 0.10)
+                        + (47150 - 11601) * 0.12
+                        + (100525 - 47151) * 0.22
+                        + (191950 - 100526) * 0.24
+                        + (243725 - 191951) * 0.32
+                        + (365600 - 243726) * 0.35
+                        + (calc_income - 365601) * 0.37; 
             tax_rate = "37%";
         }
     }
-*/
 
 
     //Calculating for the Taxable income 
