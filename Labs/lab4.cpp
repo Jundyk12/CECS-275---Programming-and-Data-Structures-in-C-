@@ -8,7 +8,7 @@ int main() {
     cout << fixed << setprecision(2);
 
     //Declaring data types for each variables
-    double gross_income, calc_income;
+    double gross_income, calc_income, new_income;
     string tax_rate;                    //Using string instead of char to able to more characters than a single one
     char filing_status;
     double standard_deduction = 0.0;    //Setting standard deduction to 0
@@ -32,30 +32,57 @@ int main() {
     calc_income = gross_income - standard_deduction;
 
     //Using multiple if, else and else if statement for each tax bracket and filing status
+    //Calculating the marginal tax without the foor loop
     //'s' || 'S' = single filing
-    if (filing_status == 'S' || filing_status == 's') {
-        if (calc_income <= 11600) {
-            calc_income = (calc_income * 0.10);
-            tax_rate = "10%";
-        } else if  (calc_income >= 11601 && calc_income <= 47150 ) {
-            calc_income = (calc_income * 0.12); 
-            tax_rate = "12%";
-        } else if (calc_income >= 47151 && calc_income <= 100525) {
-            calc_income = (calc_income * 0.22);
-            tax_rate = "22%";
-        } else if (calc_income >= 100526 && calc_income <= 191950) {
-            calc_income = (calc_income * 0.24); 
-            tax_rate = "24%";
-        } else if (calc_income >= 191951 && calc_income <= 243725) {
-            calc_income = (calc_income * 0.32); 
-            tax_rate = "32%";
-        } else if (calc_income >= 243726 && calc_income <= 609350) {
-            calc_income = (calc_income * 0.35); 
-            tax_rate = "35%";
-        } else if (calc_income >= 609351) {
-            calc_income = (calc_income * 0.37); 
-            tax_rate = "37%";
-        }
+   if (filing_status == 'S' || filing_status == 's') {
+    if (calc_income <= 11600) {
+        calc_income = calc_income * 0.10;
+        tax_rate = "10%";
+    } 
+    else if (calc_income <= 47150) {
+        calc_income = (11600 * 0.10) 
+                    + (calc_income - 11600) * 0.12;
+        tax_rate = "12%";
+    } 
+    else if (calc_income <= 100525) {
+        calc_income = (11600 * 0.10)
+                    + (47150 - 11600) * 0.12
+                    + (calc_income - 47150) * 0.22;
+        tax_rate = "22%";
+    } 
+    else if (calc_income <= 191950) {
+        calc_income = (11600 * 0.10)
+                    + (47150 - 11600) * 0.12
+                    + (100525 - 47150) * 0.22
+                    + (calc_income - 100525) * 0.24;
+        tax_rate = "24%";
+    } 
+    else if (calc_income <= 243725) {
+        calc_income = (11600 * 0.10)
+                    + (47150 - 11600) * 0.12
+                    + (100525 - 47150) * 0.22
+                    + (191950 - 100525) * 0.24
+                    + (calc_income - 191950) * 0.32;
+        tax_rate = "32%";
+    } 
+    else if (calc_income <= 609350) {
+        calc_income = (11600 * 0.10)
+                    + (47150 - 11600) * 0.12
+                    + (100525 - 47150) * 0.22
+                    + (191950 - 100525) * 0.24
+                    + (243725 - 191950) * 0.32
+                    + (calc_income - 243725) * 0.35;
+        tax_rate = "35%";
+    } 
+    else {
+        calc_income = (11600 * 0.10)
+                    + (47150 - 11600) * 0.12
+                    + (100525 - 47150) * 0.22
+                    + (191950 - 100525) * 0.24
+                    + (243725 - 191950) * 0.32
+                    + (609350 - 243725) * 0.35
+                    + (calc_income - 609350) * 0.37;
+        tax_rate = "37%";
     }
 
     //"H" || "h" = Head of household
@@ -63,10 +90,10 @@ int main() {
         if (calc_income <= 16550) {
             calc_income = (calc_income * 0.10);  
             tax_rate = "10%";
-        } else if  (calc_income >= 16551 && calc_income <= 63100 ) {
-            calc_income = (calc_income * 0.12); 
+        } else if  (calc_income <= 63100 ) {
+            calc_income = (16550 * 0.12) + (calc_income - 63100) * 0.12; 
             tax_rate = "12%";
-        } else if (calc_income >= 63101 && calc_income <= 100500) {
+        } else if (calc_income <= 100500) {
             calc_income = (calc_income * 0.22); 
             tax_rate = "22%";
         } else if (calc_income >= 100501 && calc_income <= 191950) {
@@ -135,11 +162,14 @@ int main() {
             tax_rate = "37%";
         }
     }
+*/
+
 
     //Calculating for the Taxable income 
     //Did not call the calc_income since it is being use to calculate the tax amount not the taxable income
     double taxable_income = gross_income - standard_deduction;
 
+    //This is to display all the outputs properly formatted 
     cout << "\n";
     cout << "gross income: " << gross_income << endl;
     cout << "filing status: " << filing_status << endl;
@@ -148,4 +178,5 @@ int main() {
     cout << "tax amount : " << calc_income << " (rate " << tax_rate << ")" << endl;
 
     return 0;
+    }
 }
