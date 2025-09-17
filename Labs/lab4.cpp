@@ -12,6 +12,86 @@
 #include <fstream>
 using namespace std;
 
+// Puting all the constants outside the main so they can be access globally in the code
+// Created each constant for each bracket and standard deduction for better readability and easier to debug
+// Alternatte between upper and lower brackets for better understanding of the ranges
+// Seperate each one of the filing status with a comment for better readability
+// Standard Deductions
+const double S_STANDARD_DEDUCTION = 14600;
+const double H_STANDARD_DEDUCTION = 21900;
+const double J_STANDARD_DEDUCTION = 29200;
+const double P_STANDARD_DEDUCTION = 14600;
+
+// Single brackets
+const double S_LOWER_BRACKET_1 = 0;
+const double S_UPPER_BRACKET_1 = 11600;
+const double S_LOWER_BRACKET_2 = 11601;
+const double S_UPPER_BRACKET_2 = 47150;
+const double S_LOWER_BRACKET_3 = 47151;
+const double S_UPPER_BRACKET_3 = 100525;
+const double S_LOWER_BRACKET_4 = 100526;
+const double S_UPPER_BRACKET_4 = 191950;
+const double S_LOWER_BRACKET_5 = 191951;
+const double S_UPPER_BRACKET_5 = 243725;
+const double S_LOWER_BRACKET_6 = 243726;
+const double S_UPPER_BRACKET_6 = 609350;
+const double S_LOWER_BRACKET_7 = 609351;
+
+// Married Filing Jointly brackets
+const double J_LOWER_BRACKET_1 = 0;
+const double J_UPPER_BRACKET_1 = 23200;
+const double J_LOWER_BRACKET_2 = 23201;
+const double J_UPPER_BRACKET_2 = 94300;
+const double J_LOWER_BRACKET_3 = 94301;
+const double J_UPPER_BRACKET_3 = 201050;
+const double J_LOWER_BRACKET_4 = 201051;
+const double J_UPPER_BRACKET_4 = 383900;
+const double J_LOWER_BRACKET_5 = 383901;
+const double J_UPPER_BRACKET_5 = 487450;
+const double J_LOWER_BRACKET_6 = 487451;
+const double J_UPPER_BRACKET_6 = 731200;
+const double J_LOWER_BRACKET_7 = 731201;
+
+// Married Filing Separately brackets
+const double P_LOWER_BRACKET_1 = 0;
+const double P_UPPER_BRACKET_1 = 11600;
+const double P_LOWER_BRACKET_2 = 11601;
+const double P_UPPER_BRACKET_2 = 47150;
+const double P_LOWER_BRACKET_3 = 47151;
+const double P_UPPER_BRACKET_3 = 100525;
+const double P_LOWER_BRACKET_4 = 100526;
+const double P_UPPER_BRACKET_4 = 191950;
+const double P_LOWER_BRACKET_5 = 191951;
+const double P_UPPER_BRACKET_5 = 243725;
+const double P_LOWER_BRACKET_6 = 243726;
+const double P_UPPER_BRACKET_6 = 365600;
+const double P_LOWER_BRACKET_7 = 365601;
+
+// Head of Household brackets
+const double H_LOWER_BRACKET_1 = 0;
+const double H_UPPER_BRACKET_1 = 16550;
+const double H_LOWER_BRACKET_2 = 16551;
+const double H_UPPER_BRACKET_2 = 63100;
+const double H_LOWER_BRACKET_3 = 63101;
+const double H_UPPER_BRACKET_3 = 100500;
+const double H_LOWER_BRACKET_4 = 100501;
+const double H_UPPER_BRACKET_4 = 191950;
+const double H_LOWER_BRACKET_5 = 191951;
+const double H_UPPER_BRACKET_5 = 243700;
+const double H_LOWER_BRACKET_6 = 243701;
+const double H_UPPER_BRACKET_6 = 609350;
+const double H_LOWER_BRACKET_7 = 609351;
+
+// Created constants for each tax rate to prevent magic numbers
+// Tax rates
+const double RATE_10 = 0.10;
+const double RATE_12 = 0.12;
+const double RATE_22 = 0.22;
+const double RATE_24 = 0.24;
+const double RATE_32 = 0.32;
+const double RATE_35 = 0.35;
+const double RATE_37 = 0.37;
+
 int main() {
 
     /*
@@ -34,9 +114,9 @@ int main() {
     double gross_income, calc_income, new_income;
     string tax_rate;
     char filing_status;
-    double standard_deduction = 0.0;
+    double standard_deduction = 0.0; // Initialize standard_deduction to 0.0
 
-    // Loop to read each line from the file
+    // Created while loop so that way it will just read until the end of the file and no need to type it
     while (input >> gross_income >> filing_status) {
         // Creating an if statement to check if the income is less than 0 before proceeding to the next input
         // Stop the whole program if the income is less than 0
@@ -46,200 +126,203 @@ int main() {
         }
 
         // Standard Deduction for each filing status
+        // Included both uppercase and lowercase letters for the filing status
         if (filing_status == 'S' || filing_status == 's' || filing_status == 'P' || filing_status == 'p') {
-            standard_deduction = 14600;
+            standard_deduction = S_STANDARD_DEDUCTION;
         } else if (filing_status == 'H' || filing_status == 'h') {
-            standard_deduction = 21900;
+            standard_deduction = H_STANDARD_DEDUCTION;
         } else if (filing_status == 'J' || filing_status == 'j') {
-            standard_deduction = 29200;
+            standard_deduction = J_STANDARD_DEDUCTION;
         }
-        
+
         // Calculate the actual income after the standard deduction
         // Based on the calc income we can calculate the tax amount
         calc_income = gross_income - standard_deduction;
 
+        // Made sure to use constant number instead of magic number to prevent errors or bugs in the future
+        // Used marginal tax rate to calculate the tax amount
         // "S" || "s" = Single
         if (filing_status == 'S' || filing_status == 's') {
-            if (calc_income <= 11600) {
+            if (calc_income <= S_UPPER_BRACKET_1) {
                 tax_rate = "10%";
-                calc_income = calc_income * 0.10;
-            } else if (calc_income <= 47150) {
+                calc_income = calc_income * RATE_10;
+            } else if (calc_income <= S_UPPER_BRACKET_2) {
                 tax_rate = "12%";
-                calc_income = 11600 * 0.10
-                            + (calc_income - 11600) * 0.12;
-            } else if (calc_income <= 100525) {
+                calc_income = S_UPPER_BRACKET_1 * RATE_10
+                            + (calc_income - S_UPPER_BRACKET_1) * RATE_12;
+            } else if (calc_income <= S_UPPER_BRACKET_3) {
                 tax_rate = "22%";
-                calc_income = 11600 * 0.10
-                            + (47150 - 11600) * 0.12
-                            + (calc_income - 47150) * 0.22;
-            } else if (calc_income <= 191950) {
+                calc_income = S_UPPER_BRACKET_1 * RATE_10
+                            + (S_UPPER_BRACKET_2 - S_UPPER_BRACKET_1) * RATE_12
+                            + (calc_income - S_UPPER_BRACKET_2) * RATE_22;
+            } else if (calc_income <= S_UPPER_BRACKET_4) {
                 tax_rate = "24%";
-                calc_income = 11600 * 0.10
-                            + (47150 - 11600) * 0.12
-                            + (100525 - 47150) * 0.22
-                            + (calc_income - 100525) * 0.24;
-            } else if (calc_income <= 243725) {
+                calc_income = S_UPPER_BRACKET_1 * RATE_10
+                            + (S_UPPER_BRACKET_2 - S_UPPER_BRACKET_1) * RATE_12
+                            + (S_UPPER_BRACKET_3 - S_UPPER_BRACKET_2) * RATE_22
+                            + (calc_income - S_UPPER_BRACKET_3) * RATE_24;
+            } else if (calc_income <= S_UPPER_BRACKET_5) {
                 tax_rate = "32%";
-                calc_income = 11600 * 0.10
-                            + (47150 - 11600) * 0.12
-                            + (100525 - 47150) * 0.22
-                            + (191950 - 100525) * 0.24
-                            + (calc_income - 191950) * 0.32;
-            } else if (calc_income <= 609350) {
+                calc_income = S_UPPER_BRACKET_1 * RATE_10
+                            + (S_UPPER_BRACKET_2 - S_UPPER_BRACKET_1) * RATE_12
+                            + (S_UPPER_BRACKET_3 - S_UPPER_BRACKET_2) * RATE_22
+                            + (S_UPPER_BRACKET_4 - S_UPPER_BRACKET_3) * RATE_24
+                            + (calc_income - S_UPPER_BRACKET_4) * RATE_32;
+            } else if (calc_income <= S_UPPER_BRACKET_6) {
                 tax_rate = "35%";
-                calc_income = 11600 * 0.10
-                            + (47150 - 11600) * 0.12
-                            + (100525 - 47150) * 0.22
-                            + (191950 - 100525) * 0.24
-                            + (243725 - 191950) * 0.32
-                            + (calc_income - 243725) * 0.35;
+                calc_income = S_UPPER_BRACKET_1 * RATE_10
+                            + (S_UPPER_BRACKET_2 - S_UPPER_BRACKET_1) * RATE_12
+                            + (S_UPPER_BRACKET_3 - S_UPPER_BRACKET_2) * RATE_22
+                            + (S_UPPER_BRACKET_4 - S_UPPER_BRACKET_3) * RATE_24
+                            + (S_UPPER_BRACKET_5 - S_UPPER_BRACKET_4) * RATE_32
+                            + (calc_income - S_UPPER_BRACKET_5) * RATE_35;
             } else {
                 tax_rate = "37%";
-                calc_income = 11600 * 0.10
-                            + (47150 - 11600) * 0.12
-                            + (100525 - 47150) * 0.22
-                            + (191950 - 100525) * 0.24
-                            + (243725 - 191950) * 0.32
-                            + (609350 - 243725) * 0.35
-                            + (calc_income - 609350) * 0.37;
+                calc_income = S_UPPER_BRACKET_1 * RATE_10
+                            + (S_UPPER_BRACKET_2 - S_UPPER_BRACKET_1) * RATE_12
+                            + (S_UPPER_BRACKET_3 - S_UPPER_BRACKET_2) * RATE_22
+                            + (S_UPPER_BRACKET_4 - S_UPPER_BRACKET_3) * RATE_24
+                            + (S_UPPER_BRACKET_5 - S_UPPER_BRACKET_4) * RATE_32
+                            + (S_UPPER_BRACKET_6 - S_UPPER_BRACKET_5) * RATE_35
+                            + (calc_income - S_UPPER_BRACKET_6) * RATE_37;
             }
         }
         // "H" || "h" = Head of Household
         else if (filing_status == 'H' || filing_status == 'h') {
-            if (calc_income <= 16550) {
+            if (calc_income <= H_UPPER_BRACKET_1) {
                 tax_rate = "10%";
-                calc_income = calc_income * 0.10;
-            } else if (calc_income <= 63100) {
+                calc_income = calc_income * RATE_10;
+            } else if (calc_income <= H_UPPER_BRACKET_2) {
                 tax_rate = "12%";
-                calc_income = 16550 * 0.10
-                            + (calc_income - 16550) * 0.12;
-            } else if (calc_income <= 100500) {
+                calc_income = H_UPPER_BRACKET_1 * RATE_10
+                            + (calc_income - H_UPPER_BRACKET_1) * RATE_12;
+            } else if (calc_income <= H_UPPER_BRACKET_3) {
                 tax_rate = "22%";
-                calc_income = 16550 * 0.10
-                            + (63100 - 16550) * 0.12
-                            + (calc_income - 63100) * 0.22;
-            } else if (calc_income <= 191950) {
+                calc_income = H_UPPER_BRACKET_1 * RATE_10
+                            + (H_UPPER_BRACKET_2 - H_UPPER_BRACKET_1) * RATE_12
+                            + (calc_income - H_UPPER_BRACKET_2) * RATE_22;
+            } else if (calc_income <= H_UPPER_BRACKET_4) {
                 tax_rate = "24%";
-                calc_income = 16550 * 0.10
-                            + (63100 - 16550) * 0.12
-                            + (100500 - 63100) * 0.22
-                            + (calc_income - 100500) * 0.24;
-            } else if (calc_income <= 243700) {
+                calc_income = H_UPPER_BRACKET_1 * RATE_10
+                            + (H_UPPER_BRACKET_2 - H_UPPER_BRACKET_1) * RATE_12
+                            + (H_UPPER_BRACKET_3 - H_UPPER_BRACKET_2) * RATE_22
+                            + (calc_income - H_UPPER_BRACKET_3) * RATE_24;
+            } else if (calc_income <= H_UPPER_BRACKET_5) {
                 tax_rate = "32%";
-                calc_income = 16550 * 0.10
-                            + (63100 - 16550) * 0.12
-                            + (100500 - 63100) * 0.22
-                            + (191950 - 100500) * 0.24
-                            + (calc_income - 191950) * 0.32;
-            } else if (calc_income <= 609350) {
+                calc_income = H_UPPER_BRACKET_1 * RATE_10
+                            + (H_UPPER_BRACKET_2 - H_UPPER_BRACKET_1) * RATE_12
+                            + (H_UPPER_BRACKET_3 - H_UPPER_BRACKET_2) * RATE_22
+                            + (H_UPPER_BRACKET_4 - H_UPPER_BRACKET_3) * RATE_24
+                            + (calc_income - H_UPPER_BRACKET_4) * RATE_32;
+            } else if (calc_income <= H_UPPER_BRACKET_6) {
                 tax_rate = "35%";
-                calc_income = 16550 * 0.10
-                            + (63100 - 16550) * 0.12
-                            + (100500 - 63100) * 0.22
-                            + (191950 - 100500) * 0.24
-                            + (243700 - 191950) * 0.32
-                            + (calc_income - 243700) * 0.35;
+                calc_income = H_UPPER_BRACKET_1 * RATE_10
+                            + (H_UPPER_BRACKET_2 - H_UPPER_BRACKET_1) * RATE_12
+                            + (H_UPPER_BRACKET_3 - H_UPPER_BRACKET_2) * RATE_22
+                            + (H_UPPER_BRACKET_4 - H_UPPER_BRACKET_3) * RATE_24
+                            + (H_UPPER_BRACKET_5 - H_UPPER_BRACKET_4) * RATE_32
+                            + (calc_income - H_UPPER_BRACKET_5) * RATE_35;
             } else {
                 tax_rate = "37%";
-                calc_income = 16550 * 0.10
-                            + (63100 - 16550) * 0.12
-                            + (100500 - 63100) * 0.22
-                            + (191950 - 100500) * 0.24
-                            + (243700 - 191950) * 0.32
-                            + (609350 - 243700) * 0.35
-                            + (calc_income - 609350) * 0.37;
+                calc_income = H_UPPER_BRACKET_1 * RATE_10
+                            + (H_UPPER_BRACKET_2 - H_UPPER_BRACKET_1) * RATE_12
+                            + (H_UPPER_BRACKET_3 - H_UPPER_BRACKET_2) * RATE_22
+                            + (H_UPPER_BRACKET_4 - H_UPPER_BRACKET_3) * RATE_24
+                            + (H_UPPER_BRACKET_5 - H_UPPER_BRACKET_4) * RATE_32
+                            + (H_UPPER_BRACKET_6 - H_UPPER_BRACKET_5) * RATE_35
+                            + (calc_income - H_UPPER_BRACKET_6) * RATE_37;
             }
         }
         // "J" || "j" = Married Filing Jointly
         else if (filing_status == 'J' || filing_status == 'j') {
-            if (calc_income <= 23200) {
+            if (calc_income <= J_UPPER_BRACKET_1) {
                 tax_rate = "10%";
-                calc_income = calc_income * 0.10;
-            } else if (calc_income <= 94300) {
+                calc_income = calc_income * RATE_10;
+            } else if (calc_income <= J_UPPER_BRACKET_2) {
                 tax_rate = "12%";
-                calc_income = 23200 * 0.10
-                            + (calc_income - 23200) * 0.12;
-            } else if (calc_income <= 201050) {
+                calc_income = J_UPPER_BRACKET_1 * RATE_10
+                            + (calc_income - J_UPPER_BRACKET_1) * RATE_12;
+            } else if (calc_income <= J_UPPER_BRACKET_3) {
                 tax_rate = "22%";
-                calc_income = 23200 * 0.10
-                            + (94300 - 23200) * 0.12
-                            + (calc_income - 94300) * 0.22;
-            } else if (calc_income <= 383900) {
+                calc_income = J_UPPER_BRACKET_1 * RATE_10
+                            + (J_UPPER_BRACKET_2 - J_UPPER_BRACKET_1) * RATE_12
+                            + (calc_income - J_UPPER_BRACKET_2) * RATE_22;
+            } else if (calc_income <= J_UPPER_BRACKET_4) {
                 tax_rate = "24%";
-                calc_income = 23200 * 0.10
-                            + (94300 - 23200) * 0.12
-                            + (201050 - 94300) * 0.22
-                            + (calc_income - 201050) * 0.24;
-            } else if (calc_income <= 487450) {
+                calc_income = J_UPPER_BRACKET_1 * RATE_10
+                            + (J_UPPER_BRACKET_2 - J_UPPER_BRACKET_1) * RATE_12
+                            + (J_UPPER_BRACKET_3 - J_UPPER_BRACKET_2) * RATE_22
+                            + (calc_income - J_UPPER_BRACKET_3) * RATE_24;
+            } else if (calc_income <= J_UPPER_BRACKET_5) {
                 tax_rate = "32%";
-                calc_income = 23200 * 0.10
-                            + (94300 - 23200) * 0.12
-                            + (201050 - 94300) * 0.22
-                            + (383900 - 201050) * 0.24
-                            + (calc_income - 383900) * 0.32;
-            } else if (calc_income <= 731200) {
+                calc_income = J_UPPER_BRACKET_1 * RATE_10
+                            + (J_UPPER_BRACKET_2 - J_UPPER_BRACKET_1) * RATE_12
+                            + (J_UPPER_BRACKET_3 - J_UPPER_BRACKET_2) * RATE_22
+                            + (J_UPPER_BRACKET_4 - J_UPPER_BRACKET_3) * RATE_24
+                            + (calc_income - J_UPPER_BRACKET_4) * RATE_32;
+            } else if (calc_income <= J_UPPER_BRACKET_6) {
                 tax_rate = "35%";
-                calc_income = 23200 * 0.10
-                            + (94300 - 23200) * 0.12
-                            + (201050 - 94300) * 0.22
-                            + (383900 - 201050) * 0.24
-                            + (487450 - 383900) * 0.32
-                            + (calc_income - 487450) * 0.35;
+                calc_income = J_UPPER_BRACKET_1 * RATE_10
+                            + (J_UPPER_BRACKET_2 - J_UPPER_BRACKET_1) * RATE_12
+                            + (J_UPPER_BRACKET_3 - J_UPPER_BRACKET_2) * RATE_22
+                            + (J_UPPER_BRACKET_4 - J_UPPER_BRACKET_3) * RATE_24
+                            + (J_UPPER_BRACKET_5 - J_UPPER_BRACKET_4) * RATE_32
+                            + (calc_income - J_UPPER_BRACKET_5) * RATE_35;
             } else {
                 tax_rate = "37%";
-                calc_income = 23200 * 0.10
-                            + (94300 - 23200) * 0.12
-                            + (201050 - 94300) * 0.22
-                            + (383900 - 201050) * 0.24
-                            + (487450 - 383900) * 0.32
-                            + (731200 - 487450) * 0.35
-                            + (calc_income - 731200) * 0.37;
+                calc_income = J_UPPER_BRACKET_1 * RATE_10
+                            + (J_UPPER_BRACKET_2 - J_UPPER_BRACKET_1) * RATE_12
+                            + (J_UPPER_BRACKET_3 - J_UPPER_BRACKET_2) * RATE_22
+                            + (J_UPPER_BRACKET_4 - J_UPPER_BRACKET_3) * RATE_24
+                            + (J_UPPER_BRACKET_5 - J_UPPER_BRACKET_4) * RATE_32
+                            + (J_UPPER_BRACKET_6 - J_UPPER_BRACKET_5) * RATE_35
+                            + (calc_income - J_UPPER_BRACKET_6) * RATE_37;
             }
         }
         // "P" || "p" = Married Filing Separately
         else if (filing_status == 'P' || filing_status == 'p') {
-            if (calc_income <= 11600) {
+            if (calc_income <= P_UPPER_BRACKET_1) {
                 tax_rate = "10%";
-                calc_income = calc_income * 0.10;
-            } else if (calc_income <= 47150) {
+                calc_income = calc_income * RATE_10;
+            } else if (calc_income <= P_UPPER_BRACKET_2) {
                 tax_rate = "12%";
-                calc_income = 11600 * 0.10
-                            + (calc_income - 11600) * 0.12;
-            } else if (calc_income <= 100525) {
+                calc_income = P_UPPER_BRACKET_1 * RATE_10
+                            + (calc_income - P_UPPER_BRACKET_1) * RATE_12;
+            } else if (calc_income <= P_UPPER_BRACKET_3) {
                 tax_rate = "22%";
-                calc_income = 11600 * 0.10
-                            + (47150 - 11600) * 0.12
-                            + (calc_income - 47150) * 0.22;
-            } else if (calc_income <= 191950) {
+                calc_income = P_UPPER_BRACKET_1 * RATE_10
+                            + (P_UPPER_BRACKET_2 - P_UPPER_BRACKET_1) * RATE_12
+                            + (calc_income - P_UPPER_BRACKET_2) * RATE_22;
+            } else if (calc_income <= P_UPPER_BRACKET_4) {
                 tax_rate = "24%";
-                calc_income = 11600 * 0.10
-                            + (47150 - 11600) * 0.12
-                            + (100525 - 47150) * 0.22
-                            + (calc_income - 100525) * 0.24;
-            } else if (calc_income <= 243725) {
+                calc_income = P_UPPER_BRACKET_1 * RATE_10
+                            + (P_UPPER_BRACKET_2 - P_UPPER_BRACKET_1) * RATE_12
+                            + (P_UPPER_BRACKET_3 - P_UPPER_BRACKET_2) * RATE_22
+                            + (calc_income - P_UPPER_BRACKET_3) * RATE_24;
+            } else if (calc_income <= P_UPPER_BRACKET_5) {
                 tax_rate = "32%";
-                calc_income = 11600 * 0.10
-                            + (47150 - 11600) * 0.12
-                            + (100525 - 47150) * 0.22
-                            + (191950 - 100525) * 0.24
-                            + (calc_income - 191950) * 0.32;
-            } else if (calc_income <= 365600) {
+                calc_income = P_UPPER_BRACKET_1 * RATE_10
+                            + (P_UPPER_BRACKET_2 - P_UPPER_BRACKET_1) * RATE_12
+                            + (P_UPPER_BRACKET_3 - P_UPPER_BRACKET_2) * RATE_22
+                            + (P_UPPER_BRACKET_4 - P_UPPER_BRACKET_3) * RATE_24
+                            + (calc_income - P_UPPER_BRACKET_4) * RATE_32;
+            } else if (calc_income <= P_UPPER_BRACKET_6) {
                 tax_rate = "35%";
-                calc_income = 11600 * 0.10
-                            + (47150 - 11600) * 0.12
-                            + (100525 - 47150) * 0.22
-                            + (191950 - 100525) * 0.24
-                            + (243725 - 191950) * 0.32
-                            + (calc_income - 243725) * 0.35;
+                calc_income = P_UPPER_BRACKET_1 * RATE_10
+                            + (P_UPPER_BRACKET_2 - P_UPPER_BRACKET_1) * RATE_12
+                            + (P_UPPER_BRACKET_3 - P_UPPER_BRACKET_2) * RATE_22
+                            + (P_UPPER_BRACKET_4 - P_UPPER_BRACKET_3) * RATE_24
+                            + (P_UPPER_BRACKET_5 - P_UPPER_BRACKET_4) * RATE_32
+                            + (calc_income - P_UPPER_BRACKET_5) * RATE_35;
             } else {
                 tax_rate = "37%";
-                calc_income = 11600 * 0.10
-                            + (47150 - 11600) * 0.12
-                            + (100525 - 47150) * 0.22
-                            + (191950 - 100525) * 0.24
-                            + (243725 - 191950) * 0.32
-                            + (365600 - 243725) * 0.35
-                            + (calc_income - 365600) * 0.37;
+                calc_income = P_UPPER_BRACKET_1 * RATE_10
+                            + (P_UPPER_BRACKET_2 - P_UPPER_BRACKET_1) * RATE_12
+                            + (P_UPPER_BRACKET_3 - P_UPPER_BRACKET_2) * RATE_22
+                            + (P_UPPER_BRACKET_4 - P_UPPER_BRACKET_3) * RATE_24
+                            + (P_UPPER_BRACKET_5 - P_UPPER_BRACKET_4) * RATE_32
+                            + (P_UPPER_BRACKET_6 - P_UPPER_BRACKET_5) * RATE_35
+                            + (calc_income - P_UPPER_BRACKET_6) * RATE_37;
             }
         }
 
